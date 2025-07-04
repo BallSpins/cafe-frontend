@@ -50,6 +50,7 @@ class LoginScreen(MDScreen):
 
         main_layout = MDGridLayout(
             cols=1,
+            size_hint=(0.9, None),
             adaptive_width=True,
             adaptive_height=True,
             spacing='96dp', 
