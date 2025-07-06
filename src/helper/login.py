@@ -1,6 +1,7 @@
 Label = '''
 MDLabel:
     text: "Login Form"
+    width: dp(300)
     halign: "center"
     font_style: "Display"
     role: "medium"
@@ -22,7 +23,7 @@ MDAnchorLayout:
         MDTextField:
             mode: 'filled' 
             size_hint_x: None
-            width: 300
+            width: dp(300)
 
             MDTextFieldHintText:
                 text: "Enter your email"
@@ -30,7 +31,8 @@ MDAnchorLayout:
         MDTextField:
             mode: 'filled'   
             size_hint_x: None
-            width: 300
+            width: dp(300)
+            password: True
 
             MDTextFieldHintText:
                 text: "Enter your password"
@@ -46,7 +48,7 @@ MDGridLayout:
 
     MDButton:
         size_hint_x: None   
-        width: 150
+        width: dp(150)
         theme_width: "Custom"
         
         MDButtonText:
@@ -55,7 +57,7 @@ MDGridLayout:
 
     MDButton:
         size_hint_x: None   
-        width: 150
+        width: dp(150)
         theme_width: "Custom"
 
         MDButtonText:

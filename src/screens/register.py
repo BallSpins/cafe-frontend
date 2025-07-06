@@ -17,6 +17,10 @@ from kivymd.uix.dialog import (
     MDDialogButtonContainer,
     MDDialogContentContainer,
 )
+from kivymd.uix.snackbar import (
+    MDSnackbar,
+    MDSnackbarText,
+)
 from kivymd.uix.divider import MDDivider
 from kivymd.uix.list import (
     MDListItem,
@@ -44,7 +48,7 @@ class RegisterScreen(MDScreen):
         register_button.on_release = self.show_data
 
         Builder.load_string(Textfields)
-        textfield_layout = Factory.RegisterForm()
+        textfield_layout: MDAnchorLayout = Factory.RegisterForm()
 
         self.username = textfield_layout.ids.username
         self.email = textfield_layout.ids.email
@@ -103,16 +107,16 @@ class RegisterScreen(MDScreen):
         print(response.status_code, response.text)
 
         if response.status_code != 200:
-            dialog = MDDialog(
-                MDDialogHeadlineText(text="Registration failed. Please try again."),
-                MDDialogButtonContainer(
-                    MDButton(
-                        MDButtonText(text='Close'), 
-                        on_release=lambda x: dialog.dismiss()
-                    )
-                )
+            snackbar: MDSnackbar = MDSnackbar(
+                MDSnackbarText(
+                    text="Registration failed. Please try again.",
+                    theme_text_color="Error"
+                ),
+                y=Window.height - 100,
+                pos_hint={"center_x": 0.5},
+                size_hint_x=0.8,
             )
-            dialog.open()
+            snackbar.open()
             return
 
     def show_data(self, *args):
@@ -133,16 +137,17 @@ class RegisterScreen(MDScreen):
         This method is used to show a dialog when the user does not enter any data.
         It is called when the user clicks the login or register button without entering any data.
         """
-        dialog = MDDialog(
-            MDDialogHeadlineText(text="Please enter username, email, and password."),
-            MDDialogButtonContainer(
-                MDButton(
-                    MDButtonText(text='Close'), 
-                    on_release=lambda x: dialog.dismiss()
-                )
-            )
+        snackbar: MDSnackbar = MDSnackbar(
+            MDSnackbarText(
+                text="Please enter username, email, and password.",
+                theme_text_color="Error"
+            ),
+            y='24dp',
+            pos_hint={"center_x": 0.5},
+            size_hint_x=0.8,
+            background_color=self.theme_cls.backgroundColor,
         )
-        dialog.open()
+        snackbar.open()
 
     def on_details(self, *args):
         """
