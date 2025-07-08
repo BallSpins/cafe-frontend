@@ -25,19 +25,19 @@ import asynckivy
 
 from src.utils import load_token, delete_token
 
-class OrderScreen(MDScreen):
-    order = []
+class HistoryScreen(MDScreen):
+    history = []
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.name = 'orders'
+        self.name = 'history'
 
         root_layout = MDBoxLayout(orientation="vertical")
 
         root_layout.add_widget(
             MDTopAppBar(
                 MDTopAppBarTitle(
-                    text='Orders'
+                    text='History'
                 ),
                 MDTopAppBarTrailingButtonContainer(
                     MDActionTopAppBarButton(
@@ -84,17 +84,17 @@ class OrderScreen(MDScreen):
         App.get_running_app().root.current = "login"
 
     def on_pre_enter(self, *args):
-        print("[DEBUG] Masuk ke tab orders — fetch order")
-        asynckivy.start(self.get_order())
-
+        print("[DEBUG] Masuk ke tab history — fetch history")
+        asynckivy.start(self.get_history())
+    
     def populate_cards(self):
         self.grid.clear_widgets()
 
-        if len(self.order) == 0:
-            # Tampilkan teks "No orders yet"
+        if len(self.history) == 0:
+            # Tampilkan teks "No history yet"
             self.grid.add_widget(
                 MDLabel(
-                    text="No orders yet",
+                    text="No history yet",
                     halign="center",
                     theme_text_color="Hint",
                     # font_style="TitleMedium",
@@ -104,7 +104,7 @@ class OrderScreen(MDScreen):
             )
             return
 
-        for o in self.order:
+        for o in self.history:
             menu = o["menu"]
             image_url = f"https://cafe.ddns.net{menu['gambar']}"
 
@@ -139,7 +139,7 @@ class OrderScreen(MDScreen):
                 )
             )
 
-            # Status order (pending/diproses)
+            # Status history (selesai)
             status_text = o["status"].capitalize()
             box.add_widget(
                 MDLabel(
@@ -165,9 +165,9 @@ class OrderScreen(MDScreen):
             card.add_widget(box)
             self.grid.add_widget(card)
 
-    async def get_order(self):
+    async def get_history(self):
         token, _, id = load_token()
-        print('order')
+        print('history')
         print(token, id)
         url = f'https://cafe.ddns.net/user/{id}/pesanan'
         try:
@@ -179,22 +179,22 @@ class OrderScreen(MDScreen):
                 return requests.get(url, headers=headers)
             
             response = await asynckivy.run_in_thread(x)
-            orderjson = response.json()
-            self.order = []
-            for order in orderjson.get('pesanans', []):
-                if order['status'] != 'selesai':
-                    self.order.append(order)
+            historyjson = response.json()
+            self.history = []
+            for history in historyjson.get('pesanans', []):
+                if history['status'] == 'selesai':
+                    self.history.append(history)
 
-            print(self.order)
+            print(self.history)
             self.populate_cards()
         except requests.exceptions.RequestException as e:
-            print(f"Failed to get order: {e}")
+            print(f"Failed to get history: {e}")
 
     def refresh_callback(self, *args):
         def do_refresh(_):
             self.refresh_layout.refresh_done()
             print('relaod!')
-            asynckivy.start(self.get_order())
+            asynckivy.start(self.get_history())
             
             Clock.schedule_once(lambda dt: self.content.do_layout(), 0.2)
 

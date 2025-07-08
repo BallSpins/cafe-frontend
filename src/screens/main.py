@@ -14,6 +14,8 @@ from kivymd.uix.navigationbar import (
 )
 from kivy.properties import StringProperty
 from src.screens.main_screen.home import HomeScreen
+from src.screens.main_screen.orders import OrderScreen
+from src.screens.main_screen.history import HistoryScreen
 
 class BaseNavItem(MDNavigationItem):
     icon = StringProperty()
@@ -48,8 +50,8 @@ class MainScreen(MDScreen):
 
         self.screen_manager = MDScreenManager()
         self.screen_manager.add_widget(HomeScreen())
-        self.screen_manager.add_widget(BasePage(name="orders"))
-        self.screen_manager.add_widget(BasePage(name="history"))
+        self.screen_manager.add_widget(OrderScreen())
+        self.screen_manager.add_widget(HistoryScreen())
 
         self.navbar = MDNavigationBar()
         self.navbar.bind(on_switch_tabs=self.on_switch_screen)

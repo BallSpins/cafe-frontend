@@ -1,28 +1,31 @@
-from kivymd.uix.screen import MDScreen
-from kivymd.uix.scrollview import ScrollView
+from kivy.app import App
+from kivy.metrics import dp
+from kivy.clock import Clock
+from kivy.lang import Builder
+from kivy.core.window import Window
+
+from kivymd.uix.card import MDCard
 from kivymd.uix.label import MDLabel
+from kivymd.uix.screen import MDScreen
+from kivymd.uix.fitimage import FitImage
+from kivymd.uix.divider import MDDivider
+from kivymd.uix.scrollview import ScrollView
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.gridlayout import MDGridLayout
-from kivy.metrics import dp
-from kivy.core.window import Window
-from kivymd.uix.card import MDCard
-from kivymd.uix.fitimage import FitImage
 from kivymd.uix.refreshlayout import MDScrollViewRefreshLayout
-from kivy.clock import Clock
-from kivymd.uix.button import MDIconButton, MDButton, MDButtonText
+
+from kivymd.uix.button import (
+    MDIconButton, 
+    MDButton, 
+    MDButtonText
+)
+
 from kivymd.uix.appbar import (
     MDTopAppBar,
     MDTopAppBarTitle,
     MDTopAppBarTrailingButtonContainer,
     MDActionTopAppBarButton
 )
-import requests
-from src.utils import delete_token, get_cart_count_id, get_cart_items, add_cart_items, delete_cart_items, post_order
-from kivy.app import App
-from kivy.lang import Builder
-import asynckivy
-
-from src.helper.main_screen.home import head_wrapper
 from kivymd.uix.dialog import (
     MDDialog,
     MDDialogIcon,
@@ -37,8 +40,13 @@ from kivymd.uix.list import (
     MDListItemSupportingText,
     MDListItemHeadlineText
 )
-from kivymd.uix.divider import MDDivider
-from kivymd.uix.card import MDCard
+
+import requests
+import asynckivy
+
+from src.helper.main_screen.home import head_wrapper
+from src.utils import delete_token, get_cart_count_id, get_cart_items, add_cart_items, delete_cart_items, post_order
+
 
 class HomeScreen(MDScreen):
     menu = []
@@ -99,7 +107,6 @@ class HomeScreen(MDScreen):
         self.refresh_layout.root_layout = self.grid
 
         self.add_widget(root_layout)
-        asynckivy.start(self.get_menu())
         Window.bind(size=self.on_window_resize)
 
     def logout(self, *args):
@@ -239,6 +246,10 @@ class HomeScreen(MDScreen):
             if item["id"] == menu_id:
                 return item
         return None
+    
+    def on_pre_enter(self, *args):
+        print("[DEBUG] Masuk ke tab menu — fetch menu")
+        asynckivy.start(self.get_menu())
 
     async def get_menu(self):
         try:
@@ -254,11 +265,26 @@ class HomeScreen(MDScreen):
     def populate_cards(self):
         self.grid.clear_widgets()
         # Tambahkan contoh menu
+
+        if len(self.menu) == 0:
+            # Tampilkan teks "No menu yet"
+            self.grid.add_widget(
+                MDLabel(
+                    text="No menus yet",
+                    halign="center",
+                    theme_text_color="Hint",
+                    # font_style="TitleMedium",
+                    size_hint_y=None,
+                    height=dp(100)
+                )
+            )
+            return
+        
         for item in self.menu:
             card = MDCard(
                 orientation='vertical',
                 size_hint=(1, None),
-                height=dp(300),
+                height=dp(350),
                 elevation=4,
                 radius=dp(12)
             )
@@ -296,11 +322,6 @@ class HomeScreen(MDScreen):
                 )
             )
 
-            # box.add_widget(MDLabel(
-            #     text=f"Status: {item['status']}",
-            #     theme_text_color="Secondary"
-            # ))
-
             # Tambahkan gambar
             card.add_widget(
                 FitImage(
@@ -326,11 +347,11 @@ class HomeScreen(MDScreen):
 
     def get_columns(self):
         width = Window.width
-        if width <= 400:
+        if width <= 600:
             return 1
         elif width <= 800:
             return 2
-        elif width <= 1200:
+        elif width <= 1600:
             return 3
         else:
             return 4
