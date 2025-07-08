@@ -108,7 +108,8 @@ class LoginScreen(MDScreen):
         else:
             self.reset_form()
             token = response.json().get('token')
-            save_token(token)
+            user_id = response.json().get('user_id')
+            save_token(token, user_id)
             self.manager.transition.direction = "up"
             self.manager.current = "main"
         

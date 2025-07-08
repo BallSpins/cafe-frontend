@@ -42,6 +42,7 @@ Textfields = '''
             mode: 'filled'   
             size_hint_x: None
             width: 300
+            password: True
 
             MDTextFieldHintText:
                 text: "Enter your password"

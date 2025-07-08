@@ -17,7 +17,7 @@ class PreviewApp(MDApp):
         sm.add_widget(RegisterScreen(name="register"))
         sm.add_widget(MainScreen(name="main"))
 
-        token, created_at = load_token()
+        token, created_at, _ = load_token()
         if not token or check_expired_token(created_at):
             sm.current = "login"
         else:
