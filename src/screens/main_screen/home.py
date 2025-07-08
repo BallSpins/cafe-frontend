@@ -230,7 +230,7 @@ class HomeScreen(MDScreen):
         qty = get_cart_count_id(menu_id)
         menu_item = self.get_menu_item_by_id(menu_id)
         if menu_id in self.qty_labels and menu_item:
-            self.qty_labels[menu_id].text = f"{qty}x Rp {menu_item["harga"]}"
+            self.qty_labels[menu_id].text = f"{qty}x Rp {menu_item['harga']}"
         self.total_label.text = f"Total: Rp {self.get_total_price()}"
         self.checkout_btn.disabled = len(get_cart_items()) == 0
 
