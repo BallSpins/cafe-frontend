@@ -118,7 +118,7 @@ class HomeScreen(MDScreen):
 
             qty = get_cart_count_id(i.menu_id)
 
-            qty_label = MDListItemSupportingText(text=f'{qty}x Rp {menu_item['harga']}')
+            qty_label = MDListItemSupportingText(text=f"{qty}x Rp {menu_item['harga']}")
 
             item_row = MDListItem(
                 MDListItemHeadlineText(text=menu_item['nama'].capitalize()),
@@ -165,7 +165,7 @@ class HomeScreen(MDScreen):
         )
 
         self.total_label = MDLabel(
-            text=f'Total: Rp {self.get_total_price()}',
+            text=f"Total: Rp {self.get_total_price()}",
             halign='left'
         )
 
@@ -230,8 +230,8 @@ class HomeScreen(MDScreen):
         qty = get_cart_count_id(menu_id)
         menu_item = self.get_menu_item_by_id(menu_id)
         if menu_id in self.qty_labels and menu_item:
-            self.qty_labels[menu_id].text = f'{qty}x Rp {menu_item["harga"]}'
-        self.total_label.text = f'Total: Rp {self.get_total_price()}'
+            self.qty_labels[menu_id].text = f"{qty}x Rp {menu_item["harga"]}"
+        self.total_label.text = f"Total: Rp {self.get_total_price()}"
         self.checkout_btn.disabled = len(get_cart_items()) == 0
 
     def get_menu_item_by_id(self, menu_id: int):
@@ -281,7 +281,7 @@ class HomeScreen(MDScreen):
 
             wrapper.add_widget(
                 MDLabel(
-                    text=f'Rp {item['harga']}',
+                    text=f"Rp {item['harga']}",
                     halign='right'
                 )
             )
