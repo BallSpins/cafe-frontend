@@ -25,10 +25,14 @@ class PreviewApp(MDApp):
     
     async def check_token(self):
         token, created_at, id = load_token()
-        if not token or await check_expired_token(created_at, token=token, id=id):
+        if not token:
+            self.sm.current = "login"
+            return
+        
+        if await check_expired_token(created_at, token=token, id=id):
+            delete_token()
             self.sm.current = "login"
         else:
-            delete_token()
             self.sm.current = "main"
     
     def get_application_name(self):
