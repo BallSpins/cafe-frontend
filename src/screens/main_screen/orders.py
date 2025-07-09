@@ -202,7 +202,7 @@ class OrderScreen(MDScreen):
 
     def get_columns(self):
         width = Window.width
-        if width <= 800:
+        if width <= 1000:
             return 2
         elif width <= 1600:
             return 3

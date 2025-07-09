@@ -347,11 +347,11 @@ class HomeScreen(MDScreen):
 
     def get_columns(self):
         width = Window.width
-        if width <= 600:
+        if width <= 1000:
             return 1
-        elif width <= 800:
-            return 2
         elif width <= 1600:
+            return 2
+        elif width <= 2200:
             return 3
         else:
             return 4
