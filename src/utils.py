@@ -3,6 +3,7 @@ import json
 import requests
 from datetime import datetime, timedelta
 from kivy.app import App
+import asynckivy
 
 class CartItem():
     def __init__(self, menu_id: int, quantity: int = 1):
@@ -106,11 +107,20 @@ def load_token() -> tuple[str, str, int]:
         return '', '', -1
 
 
-def check_expired_token(created_at: str, days: int = 2) -> bool:
+async def check_expired_token(created_at: str, token: str, id: int, days: int = 2) -> bool:
+    def check_token():
+        return requests.get(f'https://cafe.ddns.net/user/{id}/pesanan', headers={
+            'user-token': token
+        })
+    
     try:
         token_time = datetime.fromisoformat(created_at)
         expired = datetime.utcnow() - token_time > timedelta(days=days)
         print(f'Token age: {(datetime.utcnow() - token_time).days} day(s). Expired: {expired}')
+
+        response = await asynckivy.run_in_thread(check_token)
+        if response.json().get('detail'):
+            return True
         return expired
     except Exception as e:
         print(f'Error checking expiration: {e}')
