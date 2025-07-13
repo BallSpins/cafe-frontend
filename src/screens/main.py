@@ -1,5 +1,4 @@
 from kivymd.uix.screen import MDScreen
-from kivy.lang import Builder
 
 from kivy.core.window import Window
 from kivymd.uix.screen import MDScreen
@@ -15,7 +14,6 @@ from kivymd.uix.navigationbar import (
 from kivy.properties import StringProperty
 from src.screens.main_screen.home import HomeScreen
 from src.screens.main_screen.orders import OrderScreen
-from src.screens.main_screen.history import HistoryScreen
 
 class BaseNavItem(MDNavigationItem):
     icon = StringProperty()
@@ -51,14 +49,12 @@ class MainScreen(MDScreen):
         self.screen_manager = MDScreenManager()
         self.screen_manager.add_widget(HomeScreen())
         self.screen_manager.add_widget(OrderScreen())
-        self.screen_manager.add_widget(HistoryScreen())
 
         self.navbar = MDNavigationBar()
         self.navbar.bind(on_switch_tabs=self.on_switch_screen)
 
         self.navbar.add_widget(BaseNavItem(icon="home", text="home", active=True))
         self.navbar.add_widget(BaseNavItem(icon="clipboard-list", text="orders"))
-        self.navbar.add_widget(BaseNavItem(icon="history", text="history"))
 
         layout.add_widget(self.screen_manager)
         layout.add_widget(self.navbar)
@@ -70,8 +66,8 @@ class MainScreen(MDScreen):
         Switches the current screen to the specified screen name.
         """
         print(f"Switching to screen: {item_text}")
-        # Asumsikan tab diurut: home -> orders -> history
-        index_map = {"home": 0, "orders": 1, "history": 2}
+        # Asumsikan tab diurut: home -> orders
+        index_map = {"home": 0, "orders": 1,}
         last_index = self.current_tab_index
         new_index = index_map[item_text]
 

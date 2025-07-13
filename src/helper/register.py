@@ -2,6 +2,7 @@ Label = '''
 MDLabel:
     text: "Register Form"
     halign: "center"
+    width: dp(300)
     font_style: "Display"
     role: "medium"
 '''
@@ -23,7 +24,7 @@ Textfields = '''
             id: username
             mode: 'filled' 
             size_hint_x: None
-            width: 300
+            width: dp(300)
 
             MDTextFieldHintText:
                 text: "Enter your username"
@@ -32,7 +33,7 @@ Textfields = '''
             id: email
             mode: 'filled' 
             size_hint_x: None
-            width: 300
+            width: dp(300)
 
             MDTextFieldHintText:
                 text: "Enter your email"
@@ -41,7 +42,7 @@ Textfields = '''
             id: password
             mode: 'filled'   
             size_hint_x: None
-            width: 300
+            width: dp(300)
             password: True
 
             MDTextFieldHintText:
@@ -58,7 +59,7 @@ MDGridLayout:
 
     MDButton:
         size_hint_x: None   
-        width: 150
+        width: dp(150)
         theme_width: "Custom"
 
         MDButtonText:
@@ -67,7 +68,7 @@ MDGridLayout:
 
     MDButton:
         size_hint_x: None   
-        width: 150
+        width: dp(150)
         theme_width: "Custom"
         
         MDButtonText:

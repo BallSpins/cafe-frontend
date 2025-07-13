@@ -20,6 +20,12 @@ from kivymd.uix.appbar import (
     MDActionTopAppBarButton
 )
 
+from kivymd.uix.segmentedbutton import (
+    MDSegmentedButton, 
+    MDSegmentButtonLabel, 
+    MDSegmentedButtonItem
+)
+
 import requests
 import asynckivy
 
@@ -27,6 +33,7 @@ from src.utils import load_token, delete_token
 
 class OrderScreen(MDScreen):
     order = []
+    current_status = 'pending'
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -68,6 +75,27 @@ class OrderScreen(MDScreen):
             pos_hint={'center_x': 0.5,'center_y': 0.5}
         )
 
+        segmented = MDSegmentedButton(
+            MDSegmentedButtonItem(
+                MDSegmentButtonLabel(text='Pending'),
+                active=True,
+                # on_active=self.on_pending_active,
+                on_release=self.on_pending_active,
+            ),
+            MDSegmentedButtonItem(
+                MDSegmentButtonLabel(text='Diproses'),
+                on_release=self.on_diproses_active,
+            ),
+            MDSegmentedButtonItem(
+                MDSegmentButtonLabel(text='Selesai'),
+                on_release=self.on_selesai_active,
+            ),
+            # size_hint_x=1 
+            padding=(dp(16), dp(8), dp(16), dp(8)),
+        )
+
+        root_layout.add_widget(segmented)
+
         self.content.add_widget(self.grid)
         self.refresh_layout.add_widget(self.content)
 
@@ -77,6 +105,18 @@ class OrderScreen(MDScreen):
 
         self.add_widget(root_layout)
         Window.bind(size=self.on_window_resize)
+
+    def on_pending_active(self, *args):
+        self.current_status = 'pending'
+        asynckivy.start(self.get_order())
+
+    def on_diproses_active(self, *args):
+        self.current_status = 'diproses'
+        asynckivy.start(self.get_order())
+
+    def on_selesai_active(self, *args):
+        self.current_status = 'selesai'
+        asynckivy.start(self.get_order())
 
     def logout(self, *args):
         delete_token()
@@ -182,7 +222,7 @@ class OrderScreen(MDScreen):
             orderjson = response.json()
             self.order = []
             for order in orderjson.get('pesanans', []):
-                if order['status'] != 'selesai':
+                if order['status'] == self.current_status:
                     self.order.append(order)
 
             print(self.order)
