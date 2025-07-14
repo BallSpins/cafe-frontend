@@ -222,7 +222,7 @@ class OrderScreen(MDScreen):
             orderjson = response.json()
             self.order = []
             for order in orderjson.get('pesanans', []):
-                if order['status'] == self.current_status:
+                if order['status'] == self.current_status and order['menu_id'] is not None:
                     self.order.append(order)
 
             print(self.order)
