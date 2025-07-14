@@ -220,9 +220,10 @@ class OrderScreen(MDScreen):
             
             response = await asynckivy.run_in_thread(x)
             orderjson = response.json()
+            print(orderjson)
             self.order = []
             for order in orderjson.get('pesanans', []):
-                if order['status'] == self.current_status and order['menu_id'] is not None:
+                if order['status'] == self.current_status and order['menu'] is not None:
                     self.order.append(order)
 
             print(self.order)
